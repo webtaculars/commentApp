@@ -42,7 +42,7 @@
 			<ul class="nav nav-pills pull-right">
 				<li ng-if="!main.loggedIn"><a href="/login">Login</a></li>
 				<li ng-if="!main.loggedIn"><a href="/signup">Signup</a></li>
-				<li ng-if="main.loggedIn"><a href="#">Hello {{ main.user.email }}</a></li>
+				<li ng-if="main.loggedIn"><a href="#">Hello {{ main.user.name }}</a></li>
 				<li ng-if="main.loggedIn"><a href="#" ng-click="main.doLogout()">Logout</a></li>
 			</ul>
 			</nav>
