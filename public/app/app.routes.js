@@ -16,6 +16,11 @@ angular.module('appRoutes', ['ngRoute'])
 		.when('/signup', {
 			templateUrl: 'app/views/pages/signup.html'
 		})
+		.when('/logout', {
+			templateUrl: 'app/views/pages/home.html',
+			controller: 'MainController',
+			controllerAs: 'main'
+		})
 
 		.when('/allComments', {
 			templateUrl: 'app/views/pages/allComments.html',

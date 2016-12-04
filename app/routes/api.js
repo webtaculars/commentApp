@@ -181,6 +181,17 @@ module.exports = function(app, express, io) {
             var message;
             async.waterfall([
                 function(callback) {
+                    var array = comments.downvotes;
+                    var numOfDown = comments.numOfDown
+                    array.forEach(function(element, index, array) {
+                        if (element === req.decoded.id) {
+                            comments.downvotes.splice(index, 1)
+                            numOfDown = comments.numOfDown - 1 
+                        }
+                    });
+                    callback(null, numOfDown);
+                },
+                function(numOfDown, callback) {
                     var array = comments.upvotes;
                     var found = 0
                     array.forEach(function(element, index, array) {
@@ -189,19 +200,20 @@ module.exports = function(app, express, io) {
                             comments.upvotes.splice(index, 1)
                         }
                     });
-                    callback(null, found);
+                    callback(null, numOfDown, found);
                 },
-                function(found, callback) {
+                function(numOfDown, found, callback) {
                     if (found !== 1) {
                         comments.upvotes.push(req.decoded.id);
-                        Comment.findOneAndUpdate({ "_id": req.body.id }, { $set: { "upvotes": comments.upvotes }, $inc: { "numOfUp": 1 } }, { new: true }, function(err, newComments) {
+                        Comment.findOneAndUpdate({ "_id": req.body.id }, { $set: { "upvotes": comments.upvotes, "downvotes": comments.downvotes, "numOfDown": numOfDown }, $inc: { "numOfUp": 1 } }, { new: true }, function(err, newComments) {
                             if (err) {
                                 console.log(err)
                                 res.send(err);
                                 return
                             }
-                            console.log(newComments)
-                            message = "upvoted"
+                            message = newComments.numOfUp
+                            callback(null, message);
+
                         })
 
                     } else {
@@ -211,19 +223,20 @@ module.exports = function(app, express, io) {
                                 res.send(err);
                                 return
                             }
-                            console.log(newComments)
-                            message = "upvote removed"
+                            message = newComments.numOfUp
+                            callback(null, message);
                         })
 
                     }
-                    callback(null, message);
                 },
             ], function(err, result) {
                 if (err) {
                     res.send(err);
                     return
                 }
-                res.json({ message: "done" })
+                res.json({ message: result })
+
+                console.log(result)
 
             });
         });
@@ -240,6 +253,18 @@ module.exports = function(app, express, io) {
             var message;
             async.waterfall([
                 function(callback) {
+                    var array = comments.upvotes;
+                    var found = 0
+                    var numOfUp = comments.numOfUp
+                    array.forEach(function(element, index, array) {
+                        if (element === req.decoded.id) {
+                            comments.upvotes.splice(index, 1)
+                            numOfUp = comments.numOfUp - 1 
+                        }
+                    });
+                    callback(null, numOfUp);
+                },
+                function(numOfUp, callback) {
                     var array = comments.downvotes;
                     var found = 0
                     array.forEach(function(element, index, array) {
@@ -248,19 +273,21 @@ module.exports = function(app, express, io) {
                             comments.downvotes.splice(index, 1)
                         }
                     });
-                    callback(null, found);
+                    callback(null, numOfUp, found);
                 },
-                function(found, callback) {
+                function(numOfUp, found, callback) {
                     if (found !== 1) {
                         comments.downvotes.push(req.decoded.id);
-                        Comment.findOneAndUpdate({ "_id": req.body.id }, { $set: { "downvotes": comments.downvotes }, $inc: { "numOfDown": 1 } }, { new: true }, function(err, newComments) {
+                        Comment.findOneAndUpdate({ "_id": req.body.id }, { $set: { "downvotes": comments.downvotes, "numOfUp": numOfUp, "upvotes" : comments.upvotes}, $inc: { "numOfDown": 1 } }, { new: true }, function(err, newComments) {
                             if (err) {
                                 console.log(err)
                                 res.send(err);
                                 return
                             }
                             console.log(newComments)
-                            message = "downvoted"
+                            message = newComments.numOfDown
+                            callback(null, message);
+
                         })
 
                     } else {
@@ -271,11 +298,11 @@ module.exports = function(app, express, io) {
                                 return
                             }
                             console.log(newComments)
-                            message = "downvote removed"
+                            message = newComments.numOfDown
+                            callback(null, message);
                         })
 
                     }
-                    callback(null, message);
                 },
             ], function(err, result) {
                 if (err) {

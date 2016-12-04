@@ -2,7 +2,7 @@
 <div class="jumbotron text-center" ng-if="!main.loggedIn">
 	
 	<div>
-		<h1>If you have balls Sign up!</h1>
+		<h1>Want to read awesome comments, Sign up!</h1>
 	</div>
 
 	<div>
@@ -38,8 +38,8 @@
 				<div class="panel-body" ng-repeat="each in comment.comments | reverse">
 					<p>{{ each.creator }}</p>
 					<p>{{ each.content }}</p>
-					<p>{{ each.upvotes }} <button ng-click>Upvotes</button></p>
-					<p>{{ each.downvotes }} <button ng-click> Downvotes</button></p>
+					<p> <button ng-click="comment.doUpvote(each._id)">Upvotes {{ each.numOfUp }}</button></p>
+					<p> <button ng-click="comment.doDownvote(each._id)">Downvotes {{ each.numOfDown }}</button></p>
 				</div>
 			</div>
 
