@@ -1,7 +1,4 @@
-# commentApp
-This app is developed using MEAN. 
-
-Rentomojo Comment App.
+#Rentomojo Comment App
 
 This app is a real time commenting system developed using MEAN and socket.io.
 
