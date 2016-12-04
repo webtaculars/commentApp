@@ -1,56 +1,44 @@
-
 <div class="jumbotron text-center" ng-if="!main.loggedIn">
-	
-	<div>
-		<h1>Want to read awesome comments, Sign up!</h1>
-	</div>
-
-	<div>
-		<p>Login to write your Comment</p>
-		<a href="/login" class="btn btn-primary">Login</a>
-	</div>
+    <div>
+        <h1>Want to read awesome comments, Sign up!</h1>
+    </div>
+    <div>
+        <p>Login to write your Comment</p>
+        <a href="/login" class="btn btn-primary">Login</a>
+    </div>
 </div>
-
-
-
 <div class="row" ng-if="main.loggedIn">
-
-	<div class="col-md-3">
-
-
-	</div>
-
-	<div class="col-md-4" ng-controller="CommentController as comment">
-		<div class="row">
-			<div class="panel panel-primary">
-				<div class="panel-heading">Write your Comment</div>
-
-				<div class="panel-body">
-				<form ng-submit="comment.createComment()">
-				<input class="form-control input-lg" type="text" ng-model="comment.commentData.content" placeholder=".....">
-				
-				</form>
-				</div>
-			</div>
-
-			<div class="panel panel-success">
-				<div class="panel-heading">Your Comments</div>
-				<div class="panel-body" ng-repeat="each in comment.comments | reverse">
-					<p>{{ each.creator }}</p>
-					<p>{{ each.content }}</p>
-					<p> <button ng-click="comment.doUpvote(each._id)">Upvotes {{ each.numOfUp }}</button></p>
-					<p> <button ng-click="comment.doDownvote(each._id)">Downvotes {{ each.numOfDown }}</button></p>
-				</div>
-			</div>
-
-		</div>
-	</div>
-
-
-	<div class="col-md-3">
-
-
-	</div>
-
-
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8" ng-controller="CommentController as comment">
+        <div class="row">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Write your Comment</div>
+                <div class="panel-body">
+                    <form ng-submit="comment.createComment()">
+                        <input class="form-control input-lg" type="text" ng-model="comment.commentData.content" placeholder=".....">
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Comments</div>
+                <div class="panel-body" ng-repeat="each in comment.comments | reverse">
+                    <div class="col-md-9">
+                        <p style="color: #337AB7">{{$index+1}}. {{ each.creator }}</p>
+                        <p>{{ each.content }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <button class="btn btn-default" ng-click="comment.doUpvote(each._id)">Upvotes {{ each.numOfUp }}</button>
+                        </p>
+                        <p>
+                            <button class="btn btn-default" ng-click="comment.doDownvote(each._id)">Downvotes {{ each.numOfDown }}</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+    </div>
 </div>
