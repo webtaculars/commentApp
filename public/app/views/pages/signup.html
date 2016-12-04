@@ -1,0 +1,16 @@
+<div class="container" ng-controller="UserCreateController as user">
+		<div class="row">
+			<div class="col-sm-6 col-md-4 col-md-offset-4">
+				<h1>Signup!</h1>
+				<form  class="form-sigin" method="post" ng-submit="user.signupUser()">
+					Name: <input type="text" name="name" class="form-control" ng-model="user.userData.name">
+					Email: <input type="text" name="email" class="form-control" ng-model="user.userData.email">
+					Password: <input type="password" name="password" class="form-control" ng-model="user.userData.password">
+					<button type="submit" class="btn btn-danger">Signup</button>
+				</form>
+			</div>
+		</div>
+</div>
+
+
+ 
